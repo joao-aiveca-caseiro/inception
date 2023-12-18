@@ -4,4 +4,7 @@ build:
 	docker compose -f $(DOCKER_COMPOSE_FILE) build
 
 run:
-	docker compose -f $(DOCKER_COMPOSE_FILE) up -d
+	docker compose -f $(DOCKER_COMPOSE_FILE) up
+
+clean:
+	docker compose -f $(DOCKER_COMPOSE_FILE) down

@@ -1,21 +1,28 @@
-services: 
-  wordpress:
+services:
+  
+  mariadb:
     build:
-      context: ./wordpress  # Path to the directory containing the Dockerfile
-      dockerfile: Dockerfile  # Optional: specify the Dockerfile name
-    container_name: wordpress
+      context: ./requirements/mariadb
+    container_name: my-mariadb
     restart: always
-    depends_on:
-      - mariadb
-    environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: wordpress_user
-      WORDPRESS_DB_PASSWORD: wordpress_password
-    ports:
-      - "8080:80"
+    env_file:
+      - .env
     volumes:
-      - wordpress_data:/var/www/html
+      - mariadb_data:/var/lib/mysql
+  
+  # wordpress:
+  #   build:
+  #     context: ./requirements/wordpress
+  #   container_name: wordpress
+  #   restart: always
+  #   depends_on:
+  #     - mariadb
+  #   environment:
+  #     - .env
+  #   ports:
+  #     - "3306"
+  #   volumes:
+  #     - wordpress_data:/var/www/html
 
 volumes:
   mariadb_data:
