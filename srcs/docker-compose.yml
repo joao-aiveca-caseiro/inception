@@ -3,27 +3,27 @@ services:
   mariadb:
     build:
       context: ./requirements/mariadb
-    container_name: my-mariadb
-    restart: always
+    container_name: mariadb
+    restart: on-failure
     env_file:
       - .env
     volumes:
       - mariadb_data:/var/lib/mysql
   
-  # wordpress:
-  #   build:
-  #     context: ./requirements/wordpress
-  #   container_name: wordpress
-  #   restart: always
-  #   depends_on:
-  #     - mariadb
-  #   environment:
-  #     - .env
-  #   ports:
-  #     - "3306"
-  #   volumes:
-  #     - wordpress_data:/var/www/html
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    container_name: wordpress
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      - .env
+    ports:
+      - "3306"
+    volumes:
+      - wordpress_data:/var/www/html
 
 volumes:
-  mariadb_data:
+  mariadb_data: 
   wordpress_data:
