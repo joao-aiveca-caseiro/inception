@@ -5,6 +5,10 @@ services:
       context: ./requirements/mariadb
     container_name: mariadb
     restart: on-failure
+    networks:
+      - mariadb_wordpress
+    ports:
+      - "3306"
     env_file:
       - .env
     volumes:
@@ -14,16 +18,33 @@ services:
     build:
       context: ./requirements/wordpress
     container_name: wordpress
-    restart: always
+    restart: on-failure
+    networks:
+      - mariadb_wordpress
     depends_on:
       - mariadb
-    environment:
+    env_file:
       - .env
     ports:
-      - "3306"
+      - "9000"
     volumes:
       - wordpress_data:/var/www/html
 
 volumes:
-  mariadb_data: 
+  mariadb_data:
+    name: mariadb_data
+    driver_opts:
+      type: none
+      device: /home/jaiveca-/data/mariadb
+      o: bind
   wordpress_data:
+    name: wordpress_data
+    driver_opts:
+      type: none
+      device: /home/jaiveca-/data/wordpress
+      o: bind  
+
+networks:
+  mariadb_wordpress:
+    driver: bridge
+  

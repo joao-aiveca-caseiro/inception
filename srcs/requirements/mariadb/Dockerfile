@@ -1,10 +1,5 @@
 FROM debian:bullseye
 
-# ARG MYSQL_ROOT_PASSWORD
-# ARG MYSQL_DATABASE
-# ARG MYSQL_USER
-# ARG MYSQL_PASSWORD
-
 RUN apt-get update &&\
     DEBIAN_FRONTEND=noninteractive apt-get install -y mariadb-server && \
     rm -rf /var/lib/apt/lists/* && \
@@ -12,9 +7,8 @@ RUN apt-get update &&\
     chown -R mysql:mysql /var/run/mysqld
 
 COPY conf/config.sh config.sh
-COPY conf/init.sql /docker-entrypoint-initdb.d/
+
 RUN chmod +x config.sh
+RUN mysql_install_db
 
-EXPOSE 3306
-
-CMD ["./config.sh"]
+ENTRYPOINT ["./config.sh"]
