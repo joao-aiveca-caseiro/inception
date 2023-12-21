@@ -3,6 +3,7 @@
 sleep 5
 
 if [ ! -f "/var/www/html/wp-config.php" ]; then
+    echo BBBBBBBBBBBBBBBBBBBBBBBBB
     if cd /var/www/html && wp core download --allow-root
 
     then
